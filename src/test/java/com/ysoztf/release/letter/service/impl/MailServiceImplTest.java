@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.lang.reflect.Field;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -24,15 +26,15 @@ class MailServiceImplTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // 直接設置 from 字段，模擬配置注入
-        var fromField = MailServiceImpl.class.getDeclaredField("from");
+        // 直接设置 from 字段，模拟配置注入
+        Field fromField = MailServiceImpl.class.getDeclaredField("from");
         fromField.setAccessible(true);
-        fromField.set(mailService, "from@example.com");
+        fromField.set(mailService, "791265812@qq.com");
     }
 
     @Test
     void sendSimpleMail_shouldUseJavaMailSenderWithCorrectMessage() {
-        String to = "to@example.com";
+        String to = "2353882323@qq.com";
         String subject = "Test Subject";
         String content = "Test Content";
 
@@ -42,7 +44,7 @@ class MailServiceImplTest {
         verify(mailSender).send(captor.capture());
 
         SimpleMailMessage sentMessage = captor.getValue();
-        assertThat(sentMessage.getFrom()).isEqualTo("from@example.com");
+        assertThat(sentMessage.getFrom()).isEqualTo("791265812@qq.com");
         assertThat(sentMessage.getTo()).containsExactly(to);
         assertThat(sentMessage.getSubject()).isEqualTo(subject);
         assertThat(sentMessage.getText()).isEqualTo(content);
