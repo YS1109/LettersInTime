@@ -1,0 +1,14 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: example@qq.com  # 你的 QQ 郵箱地址
+    password: your_smtp_auth_code_here  # QQ 郵箱 POP3/SMTP 授權碼（請替換）
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+

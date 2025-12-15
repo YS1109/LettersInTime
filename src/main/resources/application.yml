@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: letters-in-time
+  # 從額外的本地文件導入敏感配置（如 QQ 郵箱賬號、授權碼）
+  # mail-config.yml 會被 .gitignore 忽略，不會提交到 Git
+  config:
+    import: optional:classpath:mail-config.yml
+
