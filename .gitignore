@@ -15,7 +15,6 @@ target/
 Thumbs.db
 
 # Local sensitive config (do NOT commit real credentials)
-src/main/resources/mail-config.yml
-src/main/resources/db-config.yml
+src/main/resources/env-config.yml
 
 

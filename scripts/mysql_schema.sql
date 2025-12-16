@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `scheduled_email` (
   `content` TEXT NOT NULL COMMENT '邮件正文',
   `scheduled_time` DATETIME NOT NULL COMMENT '计划发送时间',
   `sent_time` DATETIME DEFAULT NULL COMMENT '实际发送时间',
-  `status` VARCHAR(20) NOT NULL COMMENT '状态：PENDING / SENT / FAILED',
+  `status` VARCHAR(20) NOT NULL COMMENT '状态：CREATED / APPROVED / REJECTED / SENDING / SENT / FAILED',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_scheduled_email_status_time` (`status`, `scheduled_time`)

@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  # 从额外的本地文件导入正式环境的敏感配置（如邮箱账号、数据库账号、阿里云账号等）
+  # env-config-prod.yml 会被 .gitignore 忽略，不会提交到 Git
+  config:
+    import:
+      - optional:classpath:env-config.yml
+
+

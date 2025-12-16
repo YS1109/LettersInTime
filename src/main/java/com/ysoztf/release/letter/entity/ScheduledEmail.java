@@ -38,9 +38,9 @@ public class ScheduledEmail {
     private LocalDateTime sentTime;
 
     /**
-     * 状态：PENDING / SENT / FAILED
+     * 状态：CREATED / APPROVED / REJECTED / SENDING / SENT / FAILED
      */
-    private String status;
+    private ScheduledEmailStatus status;
 
     /**
      * 创建时间
@@ -55,7 +55,7 @@ public class ScheduledEmail {
         this.subject = subject;
         this.content = content;
         this.scheduledTime = scheduledTime;
-        this.status = "PENDING";
+        this.status = ScheduledEmailStatus.CREATED;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -103,11 +103,11 @@ public class ScheduledEmail {
         this.sentTime = sentTime;
     }
 
-    public String getStatus() {
+    public ScheduledEmailStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ScheduledEmailStatus status) {
         this.status = status;
     }
 

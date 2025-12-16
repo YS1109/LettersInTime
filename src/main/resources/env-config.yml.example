@@ -1,0 +1,27 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: example-dev@qq.com  # 开发环境 邮箱地址
+    password: your_dev_smtp_auth_code_here  # 开发环境 邮箱授权码（请替换）
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/letters_in_time_dev?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: your_mysql_dev_username   # 开发环境 MySQL 用户名
+    password: your_mysql_dev_password   # 开发环境 MySQL 密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+aliyun:
+  green:
+    access-key-id: your_dev_aliyun_ak      # 开发环境 阿里云 AccessKeyId
+    access-key-secret: your_dev_aliyun_sk  # 开发环境 阿里云 AccessKeySecret
+    region-id: cn-shanghai
+    endpoint: green-cip.cn-shanghai.aliyuncs.com
+
+
