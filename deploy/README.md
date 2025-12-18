@@ -217,7 +217,7 @@ curl -X POST http://localhost:8080/api/scheduledEmails/create \
     "to": "test@example.com",
     "subject": "测试邮件",
     "content": "这是一封测试邮件",
-    "scheduledTime": "2025-12-31T10:00:00"
+    "scheduledTime": "2025-12-31 10:00:00"
   }'
 
 # 成功返回：{"code":0,"message":"成功","data":null}
@@ -428,7 +428,7 @@ ufw enable
 ## 📞 获取帮助
 
 - 查看主文档：[../README.md](../README.md)
-- 提交 Issue：[GitHub Issues](https://github.com/your-username/LettersInTime/issues)
+- 提交 Issue：[GitHub Issues](https://github.com/YS1109/LettersInTime/issues)
 - 查看日志：`docker-compose -f deploy/docker-compose.yml logs -f`
 
 ---
