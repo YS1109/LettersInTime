@@ -17,4 +17,8 @@ Thumbs.db
 # Local sensitive config (do NOT commit real credentials)
 src/main/resources/env-config.yml
 
+# Docker
+.env
+mysql-data/
+
 

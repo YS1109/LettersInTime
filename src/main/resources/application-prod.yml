@@ -1,11 +1,39 @@
 server:
-  port: 8080
+  port: ${APP_PORT:8080}
 
 spring:
-  # 从额外的本地文件导入正式环境的敏感配置（如邮箱账号、数据库账号、阿里云账号等）
-  # env-config-prod.yml 会被 .gitignore 忽略，不会提交到 Git
+  # 从额外的本地文件导入敏感配置（仅用于本地开发）
+  # Docker 部署时通过环境变量注入配置
   config:
     import:
       - optional:classpath:env-config.yml
+  
+  # 数据库配置（优先使用环境变量）
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/letters-in-time?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  # 邮件配置（优先使用环境变量）
+  mail:
+    host: ${SPRING_MAIL_HOST:smtp.qq.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# 阿里云配置（优先使用环境变量）
+aliyun:
+  green:
+    access-key-id: ${ALIYUN_GREEN_ACCESS_KEY_ID:}
+    access-key-secret: ${ALIYUN_GREEN_ACCESS_KEY_SECRET:}
+    region-id: ${ALIYUN_GREEN_REGION_ID:cn-shanghai}
+    endpoint: ${ALIYUN_GREEN_ENDPOINT:green-cip.cn-shanghai.aliyuncs.com}
 
 

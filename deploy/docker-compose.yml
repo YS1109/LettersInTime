@@ -1,0 +1,81 @@
+version: '3.8'
+
+# LettersInTime Docker Compose 配置
+# 部署模式：代码在宿主机，容器内编译运行
+
+services:
+  # MySQL 数据库服务
+  mysql:
+    image: mysql:8.0
+    container_name: letters-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345678}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-letters-in-time}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      # 数据持久化到宿主机目录（项目根目录）
+      - ../mysql-data:/var/lib/mysql
+      # 自动执行初始化脚本
+      - ../scripts/mysql_schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-12345678}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - letters-network
+
+  # Spring Boot 应用服务
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: letters-app
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # Spring 配置
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      TZ: Asia/Shanghai
+      
+      # 数据库配置
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-letters-in-time}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME:-root}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-12345678}
+      
+      # 邮件配置
+      SPRING_MAIL_HOST: ${MAIL_HOST:-smtp.qq.com}
+      SPRING_MAIL_PORT: ${MAIL_PORT:-587}
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
+      
+      # 阿里云配置
+      ALIYUN_GREEN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID}
+      ALIYUN_GREEN_ACCESS_KEY_SECRET: ${ALIYUN_ACCESS_KEY_SECRET}
+      ALIYUN_GREEN_REGION_ID: ${ALIYUN_REGION_ID:-cn-shanghai}
+      ALIYUN_GREEN_ENDPOINT: ${ALIYUN_ENDPOINT:-green-cip.cn-shanghai.aliyuncs.com}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes:
+      # 挂载项目根目录（代码在宿主机）
+      - ..:/app
+      # 挂载 Maven 本地仓库，加速构建
+      - maven-repo:/root/.m2
+    networks:
+      - letters-network
+
+networks:
+  letters-network:
+    driver: bridge
+
+volumes:
+  # Maven 本地仓库 volume
+  maven-repo:
+
